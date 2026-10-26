@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ofrenda de la Memoria · Árbol Genealógico</title>
+  <meta name="description" content="Dashboard interactivo del árbol genealógico presentado como una ofrenda nocturna de Día de Muertos con velas.">
+  <link rel="stylesheet" href="css/styles.css?v=5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <!-- Escena Decorativa y Fondo Animado Sutil (1376x768 cover centrado abajo) -->
+    <div class="bg-stage-wrapper" aria-hidden="true">
+      <div class="bg-stage-frame">
+        <div class="bg-stage-content">
+          <img src="assets/fondo-ofrenda.jpg" alt="" class="bg-stage-image" />
+          <div class="bg-stage-effects">
+            <!-- 1. Halo pulsante sobre la luna (arriba a la derecha) -->
+            <div class="bg-moon-halo"></div>
+
+            <!-- 2. Puntos sobre estrellas visibles en el cielo con parpadeo suave -->
+            <div class="bg-star star-1"></div>
+            <div class="bg-star star-2"></div>
+            <div class="bg-star star-3"></div>
+            <div class="bg-star star-4"></div>
+            <div class="bg-star star-5"></div>
+            <div class="bg-star star-6"></div>
+            <div class="bg-star star-7"></div>
+            <div class="bg-star star-8"></div>
+            <div class="bg-star star-9"></div>
+            <div class="bg-star star-10"></div>
+
+            <!-- 3. Hilos translúcidos de incienso en bucle (violeta izquierda, cian derecha) -->
+            <div class="bg-incense-smoke smoke-left-flank">
+              <div class="smoke-ribbon ribbon-1"></div>
+              <div class="smoke-ribbon ribbon-2"></div>
+            </div>
+            <div class="bg-incense-smoke smoke-right-flank">
+              <div class="smoke-ribbon ribbon-1"></div>
+              <div class="smoke-ribbon ribbon-2"></div>
+            </div>
+
+            <!-- 4. Destellos cálidos sobre velas borrosas del fondo -->
+            <div class="bg-candle-sparkle sparkle-1"></div>
+            <div class="bg-candle-sparkle sparkle-2"></div>
+            <div class="bg-candle-sparkle sparkle-3"></div>
+            <div class="bg-candle-sparkle sparkle-4"></div>
+            <div class="bg-candle-sparkle sparkle-5"></div>
+            <div class="bg-candle-sparkle sparkle-6"></div>
+            <div class="bg-candle-sparkle sparkle-7"></div>
+
+            <!-- 5. Pétalos de cempasúchil que caen por los costados (fuera de la zona central) -->
+            <!-- Flanco izquierdo -->
+            <div class="bg-petal petal-l1"></div>
+            <div class="bg-petal petal-l2"></div>
+            <div class="bg-petal petal-l3"></div>
+            <div class="bg-petal petal-l4"></div>
+            <div class="bg-petal petal-l5"></div>
+            <div class="bg-petal petal-l6"></div>
+            <!-- Flanco derecho -->
+            <div class="bg-petal petal-r1"></div>
+            <div class="bg-petal petal-r2"></div>
+            <div class="bg-petal petal-r3"></div>
+            <div class="bg-petal petal-r4"></div>
+            <div class="bg-petal petal-r5"></div>
+            <div class="bg-petal petal-r6"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header y Cenefa de Papel Picado -->
+    <header class="site-header" role="banner">
+      <div class="papel-picado-banner" aria-hidden="true">
+        <svg viewBox="0 0 1200 12" preserveAspectRatio="none">
+          <path d="M0,0 L1200,0 L1200,4 Q1150,12 1100,4 Q1050,12 1000,4 Q950,12 900,4 Q850,12 800,4 Q750,12 700,4 Q650,12 600,4 Q550,12 500,4 Q450,12 400,4 Q350,12 300,4 Q250,12 200,4 Q150,12 100,4 Q50,12 0,4 Z" fill="#FF2D95" opacity="0.5"/>
+          <path d="M0,0 L1200,0 L1200,3 Q1175,10 1150,3 Q1125,10 1100,3 Q1075,10 1050,3 Q1025,10 1000,3 Q975,10 950,3 Q925,10 900,3 Q875,10 850,3 Q825,10 800,3 Q775,10 750,3 Q725,10 700,3 Q675,10 650,3 Q625,10 600,3 Q575,10 550,3 Q525,10 500,3 Q475,10 450,3 Q425,10 400,3 Q375,10 350,3 Q325,10 300,3 Q275,10 250,3 Q225,10 200,3 Q175,10 150,3 Q125,10 100,3 Q75,10 50,3 Q25,10 0,3 Z" fill="#FFB300" opacity="0.38"/>
+        </svg>
+      </div>
+
+      <div class="header-content">
+        <div class="brand-area">
+          <svg class="brand-moon" viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M 35 21.32 A 15 15 0 1 1 18.68 5 A 11.67 11.67 0 0 0 35 21.32 Z" fill="var(--cera)" />
+          </svg>
+          <div>
+            <h1 class="site-title">Ofrenda de la Memoria</h1>
+            <p class="site-subtitle">Árbol genealógico familiar · Una vela por cada historia</p>
+          </div>
+        </div>
+
+        <!-- Controles de Navegación por Generaciones y Zoom -->
+        <div class="nav-controls" role="toolbar" aria-label="Controles de navegación">
+          <div class="btn-group" role="group" aria-label="Nivel generacional">
+            <button type="button" class="btn active" id="btn-gen-all" data-gen="all">Ver todo</button>
+            <button type="button" class="btn" id="btn-gen-2" data-gen="2">Generación 2</button>
+            <button type="button" class="btn" id="btn-gen-1" data-gen="1">Generación 1</button>
+            <button type="button" class="btn" id="btn-gen-0" data-gen="0">Generación 0</button>
+          </div>
+
+          <div class="btn-group" role="group" aria-label="Controles de zoom">
+            <button type="button" class="btn btn-icon" id="btn-zoom-in" title="Acercar (+)" aria-label="Acercar">+</button>
+            <button type="button" class="btn btn-icon" id="btn-zoom-out" title="Alejar (-)" aria-label="Alejar">−</button>
+            <button type="button" class="btn btn-icon" id="btn-zoom-reset" title="Restablecer vista" aria-label="Restablecer vista">⟲</button>
+          </div>
+
+          <button type="button" class="btn btn-summary" id="btn-toggle-summary" title="Ver resumen demográfico y memoria familiar" aria-expanded="false" aria-controls="summary-panel">
+            <span aria-hidden="true">📊</span> Resumen
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra Secundaria: Búsqueda, Filtros Combinados y Linaje (Fase 2) -->
+      <div class="header-toolbar-secondary" role="region" aria-label="Herramientas de búsqueda y filtros">
+        <div class="search-container">
+          <div class="search-input-wrapper">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input type="search" id="input-search" class="search-input" placeholder="Buscar pariente por nombre..." autocomplete="off" aria-label="Buscar pariente por nombre" />
+            <button type="button" id="btn-clear-search" class="btn-clear-search hidden" title="Borrar búsqueda" aria-label="Borrar búsqueda">×</button>
+          </div>
+          <div id="search-dropdown" class="search-dropdown hidden" role="listbox" aria-label="Resultados de búsqueda"></div>
+        </div>
+
+        <div class="filter-controls">
+          <div class="select-wrapper">
+            <select id="filter-status" class="filter-select" aria-label="Filtrar por estado">
+              <option value="all">Estado: Todos</option>
+              <option value="alive">Solo vivos</option>
+              <option value="deceased">Solo fallecidos</option>
+            </select>
+          </div>
+
+          <div class="select-wrapper">
+            <select id="filter-city" class="filter-select" aria-label="Filtrar por ciudad">
+              <option value="all">Ciudad: Todas</option>
+            </select>
+          </div>
+
+          <div class="select-wrapper">
+            <select id="filter-profession" class="filter-select" aria-label="Filtrar por profesión">
+              <option value="all">Profesión: Todas</option>
+            </select>
+          </div>
+
+          <button type="button" class="btn btn-lineage" id="btn-toggle-lineage" title="Resaltar ancestros y descendientes de la persona seleccionada" aria-pressed="false">
+            <span class="icon-lineage" aria-hidden="true">✨</span> Linaje
+          </button>
+
+          <button type="button" class="btn btn-icon btn-clear-filters" id="btn-clear-all-filters" title="Limpiar todos los filtros" aria-label="Limpiar todos los filtros">
+            ✕
+          </button>
+
+          <span id="filter-count-badge" class="filter-badge" title="Personas coincidentes">57 / 57</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenedor del Lienzo Interactivo -->
+    <main class="viewport-container" id="viewport-container" role="main" aria-label="Lienzo del árbol genealógico">
+      <!-- Capa de Contraste Radial Suave para Legibilidad del Árbol -->
+      <div class="viewport-radial-overlay" aria-hidden="true"></div>
+
+      <svg id="tree-canvas" role="img" aria-label="Árbol genealógico familiar en ofrenda nocturna">
+        <defs>
+          <!-- Filtro de resplandor cálido (llama de vivos) -->
+          <filter id="glow-warm" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur1" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="blur2" />
+            <feMerge>
+              <feMergeNode in="blur2" />
+              <feMergeNode in="blur1" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+
+          <!-- Filtro de halo espectral reforzado (fallecidos) -->
+          <filter id="glow-violet" x="-70%" y="-70%" width="240%" height="240%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur1" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur2" />
+            <feMerge>
+              <feMergeNode in="blur2" />
+              <feMergeNode in="blur1" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+
+          <!-- Gradiente de llama cempasúchil -->
+          <linearGradient id="flame-grad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#E64A19" />
+            <stop offset="35%" stop-color="#FFB300" />
+            <stop offset="80%" stop-color="#FFE082" />
+            <stop offset="100%" stop-color="#FFFFFF" />
+          </linearGradient>
+
+          <!-- Gradientes de la llama multicapa (Capa exterior, media y núcleo) -->
+          <linearGradient id="flame-outer-grad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#E64A19" />
+            <stop offset="40%" stop-color="#FF8F00" />
+            <stop offset="80%" stop-color="#FFB300" />
+            <stop offset="100%" stop-color="#FFE082" />
+          </linearGradient>
+
+          <linearGradient id="flame-mid-grad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#FF5722" />
+            <stop offset="45%" stop-color="#FF9800" />
+            <stop offset="85%" stop-color="#FFD54F" />
+            <stop offset="100%" stop-color="#FFF59D" />
+          </linearGradient>
+
+          <linearGradient id="flame-core-grad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#FFE082" />
+            <stop offset="40%" stop-color="#FFF9C4" />
+            <stop offset="100%" stop-color="#FFFFFF" />
+          </linearGradient>
+
+          <!-- Gradiente del cuerpo de la vela (cilindro y luz lateral) -->
+          <linearGradient id="candle-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#CBB58E" />
+            <stop offset="14%" stop-color="#FFF7E2" />
+            <stop offset="36%" stop-color="#F5E6C6" />
+            <stop offset="68%" stop-color="#E7D2AA" />
+            <stop offset="100%" stop-color="#BDA173" />
+          </linearGradient>
+
+          <!-- Gradiente vertical para volumen y sombreado inferior -->
+          <linearGradient id="candle-vert-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.3" />
+            <stop offset="25%" stop-color="#FFFFFF" stop-opacity="0" />
+            <stop offset="70%" stop-color="#4A3415" stop-opacity="0.06" />
+            <stop offset="100%" stop-color="#33210C" stop-opacity="0.32" />
+          </linearGradient>
+
+          <!-- Gradiente para gotas de cera en relieve -->
+          <linearGradient id="candle-drip-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FFF8E7" />
+            <stop offset="60%" stop-color="#EEDBB7" />
+            <stop offset="100%" stop-color="#CBB184" />
+          </linearGradient>
+
+          <!-- Gradiente radial para charco de cera en la base -->
+          <radialGradient id="candle-pool-grad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#F5E8C8" stop-opacity="0.9" />
+            <stop offset="65%" stop-color="#DFC8A0" stop-opacity="0.7" />
+            <stop offset="100%" stop-color="#A18452" stop-opacity="0.25" />
+          </radialGradient>
+
+          <!-- Gradiente de llama violeta del ritual de difuntos -->
+          <linearGradient id="flame-violet-grad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#4A148C" />
+            <stop offset="30%" stop-color="#7C4DFF" />
+            <stop offset="70%" stop-color="#B388FF" />
+            <stop offset="90%" stop-color="#E1BEE7" />
+            <stop offset="100%" stop-color="#FFFFFF" />
+          </linearGradient>
+
+          <!-- FORMA REUTILIZABLE: Cuerpo artesanal de la vela (idéntico en las 57 velas) -->
+          <g id="candle-artistic-body">
+            <!-- Charco de cera en la base -->
+            <ellipse class="candle-base-pool" cx="0" cy="34" rx="24" ry="4.5" fill="url(#candle-pool-grad)" />
+
+            <!-- Columna de cera con borde superior ondulado -->
+            <path class="candle-wax-column"
+                  d="M -21,32 L -21,-33 Q -15,-35.5 -7,-33 Q 0,-34.5 10,-35 Q 16,-34.5 21,-33 L 21,32 Q 0,35 -21,32 Z"
+                  fill="url(#candle-grad)"
+                  stroke="rgba(255, 255, 255, 0.45)"
+                  stroke-width="1.2" />
+
+            <!-- Sombreado vertical de volumen -->
+            <path d="M -21,32 L -21,-33 Q -15,-35.5 -7,-33 Q 0,-34.5 10,-35 Q 16,-34.5 21,-33 L 21,32 Q 0,35 -21,32 Z"
+                  fill="url(#candle-vert-grad)" />
+
+            <!-- Vetas verticales sutiles de cera -->
+            <path d="M -8,-28 Q -6,-2 -8,26" fill="none" stroke="rgba(255, 255, 255, 0.28)" stroke-width="1.4" stroke-linecap="round" />
+            <path d="M 4,-20 Q 5,2 3,24" fill="none" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1.1" stroke-linecap="round" />
+            <path d="M 12,-26 Q 13,0 11,25" fill="none" stroke="rgba(75, 45, 18, 0.16)" stroke-width="1.1" stroke-linecap="round" />
+
+            <!-- Goteos de cera en relieve -->
+            <path d="M -17,-34 L -17,-16 C -17,-12 -11,-12 -11,-16 L -11,-33 Z"
+                  fill="url(#candle-drip-grad)"
+                  stroke="rgba(255, 255, 255, 0.35)"
+                  stroke-width="0.8" />
+            <path d="M 7,-34 L 7,-24 C 7,-21 11,-21 11,-24 L 11,-34 Z"
+                  fill="url(#candle-drip-grad)"
+                  stroke="rgba(255, 255, 255, 0.35)"
+                  stroke-width="0.8" />
+
+            <!-- Pábilo oscuro visible bajo la llama -->
+            <path class="candle-wick" d="M 0,-33 Q 0.6,-38 -0.8,-44"
+                  fill="none" stroke="#261A13" stroke-width="2.4" stroke-linecap="round" />
+            <!-- Punta quemada del pábilo -->
+            <ellipse cx="-0.8" cy="-44" rx="1.5" ry="1.3" fill="#120A05" />
+          </g>
+
+          <!-- FORMA REUTILIZABLE: Llama multicapa (3 capas superpuestas) -->
+          <g id="flame-artistic-layers">
+            <!-- Capa 1: Exterior Cempasúchil -->
+            <path class="flame-layer-outer" fill="url(#flame-outer-grad)"
+                  d="M 0,-77 C 13,-63 15,-49 10,-39 C 6,-33 -6,-33 -10,-39 C -15,-49 -13,-63 0,-77 Z" />
+            <!-- Capa 2: Media Naranja -->
+            <path class="flame-layer-mid" fill="url(#flame-mid-grad)"
+                  d="M 0,-71 C 9,-59 10,-48 7,-40 C 4,-35 -4,-35 -7,-40 C -10,-48 -9,-59 0,-71 Z" />
+            <!-- Capa 3: Núcleo Blanco-Amarillo -->
+            <path class="flame-layer-core" fill="url(#flame-core-grad)"
+                  d="M 0,-58 C 5,-50 5,-44 3,-39 C 2,-36 -2,-36 -3,-39 C -5,-44 -5,-50 0,-58 Z" />
+          </g>
+        </defs>
+
+        <!-- Grupo principal transformable (Zoom y Pan) -->
+        <g id="viewport-group">
+          <!-- Guías y Rótulos de Niveles Generacionales -->
+          <g id="level-guides-layer" aria-hidden="true"></g>
+
+          <!-- Capa de Conexiones de Pareja (Guirnaldas de Cempasúchil) -->
+          <g id="couple-links-layer"></g>
+
+          <!-- Capa de Conexiones de Filiación (Padres a Hijos) -->
+          <g id="parent-links-layer"></g>
+
+          <!-- Capa de Velas (Nodos) -->
+          <g id="nodes-layer" role="group" aria-label="Velas de la familia"></g>
+        </g>
+      </svg>
+    </main>
+
+    <!-- Leyenda Fija Permanente -->
+    <div class="fixed-legend" role="complementary" aria-label="Simbología del árbol">
+      <div class="legend-item">
+        <span class="legend-symbol"><span class="symbol-alive"></span></span>
+        <span><strong>Llama encendida:</strong> Vive</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-symbol"><span class="symbol-deceased"></span></span>
+        <span><strong>Halo violeta:</strong> Falleció</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-symbol"><span class="symbol-selected"></span></span>
+        <span><strong>Aro cian:</strong> Seleccionado</span>
+      </div>
+    </div>
+
+    <!-- Panel de Resumen Demográfico y Memoria Familiar (Fase 3 reducida) -->
+    <aside id="summary-panel" class="summary-panel hidden" role="region" aria-labelledby="summary-panel-title" aria-label="Resumen demográfico de la memoria familiar">
+      <div class="summary-card">
+        <header class="summary-header">
+          <div class="summary-header-title">
+            <span class="summary-header-icon" aria-hidden="true">📊</span>
+            <h2 id="summary-panel-title" class="summary-title">Resumen de la Memoria</h2>
+          </div>
+          <button type="button" class="btn-close-summary" id="btn-close-summary" aria-label="Cerrar resumen" title="Cerrar (Esc)">✕</button>
+        </header>
+
+        <div class="summary-body" id="summary-body">
+          <!-- Métricas globales -->
+          <div class="summary-totals-grid">
+            <div class="summary-total-box">
+              <span class="summary-total-number" id="sum-total-persons">0</span>
+              <span class="summary-total-label">Total personas</span>
+            </div>
+            <div class="summary-total-box">
+              <span class="summary-total-number highlight-alive" id="sum-alive-persons">0</span>
+              <span class="summary-total-label">Vivos</span>
+            </div>
+            <div class="summary-total-box">
+              <span class="summary-total-number highlight-deceased" id="sum-deceased-persons">0</span>
+              <span class="summary-total-label">Fallecidos</span>
+            </div>
+          </div>
+
+          <!-- Promedio global de años vividos -->
+          <div class="summary-highlight-card">
+            <div class="summary-highlight-label">Años vividos promedio de los fallecidos</div>
+            <div class="summary-highlight-value"><span id="sum-avg-years">0</span> <span class="unit">años</span></div>
+          </div>
+
+          <!-- Desglose por generaciones -->
+          <div class="summary-gen-section">
+            <div class="summary-gen-heading">Fallecidos por generación</div>
+            
+            <div class="summary-gen-item">
+              <div class="summary-gen-row">
+                <span class="summary-gen-name">Generación 2</span>
+                <span class="summary-gen-badge" id="sum-gen2-stat">0 de 0</span>
+              </div>
+            </div>
+
+            <div class="summary-gen-item">
+              <div class="summary-gen-row">
+                <span class="summary-gen-name">Generación 1</span>
+                <span class="summary-gen-badge" id="sum-gen1-stat">0 de 0</span>
+              </div>
+              <div class="summary-gen-detail" id="sum-gen1-detail"></div>
+            </div>
+
+            <div class="summary-gen-item">
+              <div class="summary-gen-row">
+                <span class="summary-gen-name">Generación 0</span>
+                <span class="summary-gen-badge" id="sum-gen0-stat">0 de 0</span>
+              </div>
+              <div class="summary-gen-detail" id="sum-gen0-detail"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Tooltip Flotante de Persona (Fase 2) -->
+    <div id="candle-tooltip" class="candle-tooltip hidden" role="tooltip" aria-hidden="true"></div>
+
+    <!-- Ficha de la Persona (Responsive: Lateral en Laptop, Bottom-Sheet en Móvil) -->
+    <aside class="person-drawer" id="person-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="drawer-person-name">
+      <div class="drawer-drag-handle" aria-hidden="true"></div>
+      
+      <header class="drawer-header">
+        <div>
+          <div id="drawer-status-badge" class="drawer-status-badge alive">
+            <span>●</span> <span id="drawer-status-text">Vive con nosotros</span>
+          </div>
+          <h2 class="drawer-title" id="drawer-person-name">Nombre de la Persona</h2>
+          <button type="button" class="btn-drawer-lineage" id="btn-drawer-lineage">
+            <span aria-hidden="true">✨</span> Resaltar linaje de esta persona
+          </button>
+        </div>
+        <button type="button" class="btn-close-drawer" id="btn-close-drawer" aria-label="Cerrar ficha">×</button>
+      </header>
+
+      <div class="drawer-body" id="drawer-body">
+        <!-- Fechas y Años Vividos / Edad -->
+        <section class="card-section">
+          <h3 class="section-label">Línea de Tiempo</h3>
+          <div class="dates-grid">
+            <div>
+              <div class="date-item-label">Nacimiento</div>
+              <div class="date-item-value" id="drawer-birth-date">—</div>
+            </div>
+            <div>
+              <div class="date-item-label" id="drawer-death-label">Fallecimiento</div>
+              <div class="date-item-value" id="drawer-death-date">—</div>
+            </div>
+          </div>
+          <div class="calculated-tag" id="drawer-calculated-age">—</div>
+        </section>
+
+        <!-- Trayectoria Vital y Profesión -->
+        <section class="card-section">
+          <h3 class="section-label">Trayectoria y Origen</h3>
+          <div class="trajectory-card">
+            <div class="trajectory-item">
+              <span class="trajectory-icon" aria-hidden="true">📍</span>
+              <div class="trajectory-content">
+                <div class="trajectory-title">Ciudad de origen</div>
+                <div class="trajectory-value" id="drawer-origin-city">—</div>
+              </div>
+            </div>
+            <div class="trajectory-item">
+              <span class="trajectory-icon" aria-hidden="true">🗺️</span>
+              <div class="trajectory-content">
+                <div class="trajectory-title">Otras ciudades donde vivió</div>
+                <div class="cities-chips" id="drawer-cities-list">
+                  <span class="city-chip">Ninguna adicional registrada</span>
+                </div>
+              </div>
+            </div>
+            <div class="trajectory-item">
+              <span class="trajectory-icon" aria-hidden="true">💼</span>
+              <div class="trajectory-content">
+                <div class="trajectory-title">Ocupación / Profesión</div>
+                <div class="trajectory-value" id="drawer-profession">—</div>
+              </div>
+            </div>
+            <div class="trajectory-item">
+              <span class="trajectory-icon" aria-hidden="true">💍</span>
+              <div class="trajectory-content">
+                <div class="trajectory-title">Estado civil</div>
+                <div class="trajectory-value" id="drawer-civil-status">—</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Biografía e Historia Personal -->
+        <section class="card-section">
+          <h3 class="section-label">Historia de Vida</h3>
+          <p class="bio-text" id="drawer-bio-text">—</p>
+        </section>
+
+        <!-- Información Médica -->
+        <section class="card-section">
+          <h3 class="section-label">Información Médica Registrada</h3>
+          <p class="medical-box" id="drawer-medical-info">Sin información médica registrada</p>
+        </section>
+
+        <!-- Familiares Directos -->
+        <section class="card-section">
+          <h3 class="section-label">Vínculos Familiares Directos</h3>
+          <div class="relatives-list" id="drawer-relatives-list">
+            <!-- Botones dinámicos a familiares -->
+          </div>
+        </section>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Script Principal de la Aplicación -->
+  <script type="module" src="js/app.js?v=5"></script>
+</body>
+</html>
